@@ -11,21 +11,21 @@ connectDB();
 app.use(express.json({ extended: false }));
 
 //To use build folder as static
-// app.use(express.static(path.join(__dirname, '/client/build')));
+app.use(express.static(path.join(__dirname, '/client/build')));
 
-// app.get('/', (req, res) => {
-//     res.render('index');
-// });
+app.get('/', (req, res) => {
+    res.render('index');
+});
 
 //Serve Static assets in production
-if (process.env.NODE_ENV === 'production') {
-    //Set static folder
-    app.use(express.static('client/build'));
+// if (process.env.NODE_ENV === 'production') {
+//     //Set static folder
+//     app.use(express.static('client/build'));
 
-    app.get('*', (req, res) =>
-        res.sendFile(path.resolved(__dirname, 'client', 'build', 'index.html'))
-    );
-}
+//     app.get('*', (req, res) =>
+//         res.sendFile(path.resolved(__dirname, 'client', 'build', 'index.html'))
+//     );
+// }
 
 //Define Routes
 app.use('/api/users', require('./routes/api/users'));

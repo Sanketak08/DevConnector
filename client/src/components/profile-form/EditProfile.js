@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from 'react';
+import React, { useState, Fragment, useEffect } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -27,6 +27,29 @@ const EditProfile = ({
 
     const [DisplaySocialInputs, toggleSocialInputs] = useState(false);
 
+    useEffect(() => {
+        getCurrentProfile();
+
+        setFormData({
+            company: loading || !profile.company ? '' : profile.company,
+            website: loading || !profile.website ? '' : profile.website,
+            location: loading || !profile.location ? '' : profile.location,
+            status: loading || !profile.status ? '' : profile.status,
+            skills: loading || !profile.skills ? '' : profile.skills,
+            githubusername:
+                loading || !profile.githubusername
+                    ? ''
+                    : profile.githubusername,
+            bio: loading || !profile.bio ? '' : profile.bio,
+            twitter: loading || !profile.social ? '' : profile.social.twitter,
+            facebook: loading || !profile.social ? '' : profile.social.facebook,
+            linkedin: loading || !profile.social ? '' : profile.social.linkedin,
+            youtube: loading || !profile.social ? '' : profile.social.youtube,
+            instagram:
+                loading || !profile.social ? '' : profile.social.instagram,
+        });
+    }, [loading]);
+
     const {
         company,
         website,
@@ -47,7 +70,7 @@ const EditProfile = ({
 
     const onSubmit = (e) => {
         e.preventDefault();
-        createProfile(formData, history);
+        createProfile(formData, history, true);
     };
 
     return (
@@ -231,9 +254,9 @@ const EditProfile = ({
                     </Fragment>
                 )}
                 <input type='submit' className='btn btn-primary my-1' />
-                <a className='btn btn-light my-1' href='dashboard.html'>
+                <Link className='btn btn-light my-1' to='/dashboard'>
                     Go Back
-                </a>
+                </Link>
             </form>
         </Fragment>
     );
@@ -249,6 +272,6 @@ const mapStateToProps = (state) => ({
     profile: state.profile,
 });
 
-export default connect(mapStateToProps, { createProfile })(
+export default connect(mapStateToProps, { createProfile, getCurrentProfile })(
     withRouter(EditProfile)
 );
